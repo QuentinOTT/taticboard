@@ -62,7 +62,6 @@ services:
       - backend
     networks:
       - tacticboard-net
-      - choptaloc-network
 
 volumes:
   pgdata_prod:
@@ -70,5 +69,3 @@ volumes:
 networks:
   tacticboard-net:
     driver: bridge
-  choptaloc-network:
-    external: true

@@ -68,14 +68,6 @@ services:
     depends_on:
       - frontend
       - backend
-    networks:
-      - default
-      - choptaloc-network
 
 volumes:
   pgdata:
-
-networks:
-  default:
-  choptaloc-network:
-    external: true
