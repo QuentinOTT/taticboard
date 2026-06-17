@@ -21,6 +21,7 @@ RUN npm run build
 FROM nginx:alpine AS runner
 # Copy built static files to nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
-# Nginx served by the nginx service in docker-compose.prod.yml
+# Copy custom nginx configuration for SPA routing
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
