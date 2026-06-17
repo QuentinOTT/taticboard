@@ -54,30 +54,21 @@ services:
     container_name: tacticboard-nginx-prod
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
+      - "3006:80"
     volumes:
       - ./nginx/nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./nginx/ssl:/etc/nginx/ssl:ro
-      - certbot_www:/var/www/certbot:ro
     depends_on:
       - frontend
       - backend
     networks:
       - tacticboard-net
-
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./nginx/ssl:/etc/letsencrypt
-      - certbot_www:/var/www/certbot
-    profiles:
-      - certbot
+      - choptaloc-network
 
 volumes:
   pgdata_prod:
-  certbot_www:
 
 networks:
   tacticboard-net:
     driver: bridge
+  choptaloc-network:
+    external: true
