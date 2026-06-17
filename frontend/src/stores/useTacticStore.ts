@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Formation, Player, Composition, FootballType, Team, TeamPlayer } from '../types';
+import { Formation, Player, Composition, FootballType, Team, TeamPlayer, translatePosition } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
@@ -31,6 +31,7 @@ interface TacticStore {
   currentTeam: Team | null;
   positionAssignments: Record<string, string>; // positionId → teamPlayerId
   rosterPanelOpen: boolean;
+  selectedRosterPlayerId: string | null;
 
   // ── Formation actions ──
   loadFormations: () => Promise<void>;
@@ -57,6 +58,7 @@ interface TacticStore {
   autoAssignTeam: () => void;
   clearAssignments: () => void;
   toggleRosterPanel: () => void;
+  selectRosterPlayer: (id: string | null) => void;
 }
 
 // ─── Store Implementation ─────────────────────────────────────
@@ -81,6 +83,7 @@ export const useTacticStore = create<TacticStore>((set, get) => ({
   currentTeam: null,
   positionAssignments: {},
   rosterPanelOpen: false,
+  selectedRosterPlayerId: null,
 
   // ── Load all formations from API ──
   loadFormations: async () => {
@@ -160,6 +163,7 @@ export const useTacticStore = create<TacticStore>((set, get) => ({
   toggleCompareMode: () => set((s) => ({ compareMode: !s.compareMode, compareFormation: null })),
   setActiveTab: (tab) => set({ activeTab: tab }),
   toggleRosterPanel: () => set((s) => ({ rosterPanelOpen: !s.rosterPanelOpen })),
+  selectRosterPlayer: (id) => set({ selectedRosterPlayerId: id }),
 
   // ── Save composition ──
   saveComposition: async (title: string): Promise<string> => {
@@ -316,9 +320,11 @@ export const useTacticStore = create<TacticStore>((set, get) => ({
         (p) =>
           !usedPlayerIds.has(p.id) &&
           p.preferredPositions.some(
-            (pp) => pp.toUpperCase() === pos.id.toUpperCase() ||
-                    pos.label.toUpperCase().includes(pp.toUpperCase()) ||
-                    pp.toUpperCase().includes(pos.label.toUpperCase())
+            (pp) => {
+              const transPos = translatePosition(pos.label).toUpperCase();
+              const transPp = translatePosition(pp).toUpperCase();
+              return transPp === transPos || transPos.includes(transPp) || transPp.includes(transPos);
+            }
           )
       );
       if (match) {

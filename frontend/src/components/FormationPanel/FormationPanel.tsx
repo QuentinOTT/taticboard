@@ -25,7 +25,7 @@ const FormationCard: React.FC<FormationCardProps> = ({
   onCompare,
   isCompare,
 }) => {
-  const topStat = Object.entries(formation.radar_stats).reduce(
+  const topStat = Object.entries(formation.radar_stats || {}).reduce(
     (max, [k, v]) => (v > max.v ? { k, v } : max),
     { k: '', v: 0 }
   );
@@ -41,7 +41,7 @@ const FormationCard: React.FC<FormationCardProps> = ({
       </div>
       <div className="formation-card-stats">
         <div className="stat-bar">
-          <span className="stat-label">{RADAR_LABELS[topStat.k]}</span>
+          <span className="stat-label">{RADAR_LABELS[topStat.k] || 'Non défini'}</span>
           <div className="stat-track">
             <div className="stat-fill" style={{ width: `${topStat.v}%` }} />
           </div>

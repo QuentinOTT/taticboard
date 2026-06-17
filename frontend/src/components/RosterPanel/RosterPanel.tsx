@@ -16,6 +16,8 @@ const RosterPanel: React.FC = () => {
     autoAssignTeam,
     clearAssignments,
     setCurrentTeam,
+    selectedRosterPlayerId,
+    selectRosterPlayer,
   } = useTacticStore();
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -47,11 +49,14 @@ const RosterPanel: React.FC = () => {
                   const assignedPos = Object.entries(positionAssignments).find(
                     ([, pid]) => pid === player.id
                   )?.[0];
+                  const isSelected = selectedRosterPlayerId === player.id;
 
                   return (
                     <div
                       key={player.id}
-                      className={`mobile-roster-card ${assignedPos ? 'selected' : ''}`}
+                      className={`mobile-roster-card ${assignedPos ? 'selected' : ''} ${isSelected ? 'active-selection' : ''}`}
+                      onClick={() => selectRosterPlayer(isSelected ? null : player.id)}
+                      style={{ cursor: 'pointer', transition: 'all 0.2s ease' }}
                     >
                       <div className="roster-player-avatar" style={{ background: player.avatarColor, width: 24, height: 24, fontSize: 10, flexShrink: 0 }}>
                         {player.number || '—'}
@@ -69,7 +74,7 @@ const RosterPanel: React.FC = () => {
                           <span className="navbar-formation-badge" style={{ fontSize: 9, padding: '1px 5px' }}>{translatePosition(assignedPos)}</span>
                           <button
                             style={{ background: 'transparent', border: 'none', color: '#ef4444', fontSize: 14, cursor: 'pointer', padding: 4 }}
-                            onClick={() => unassignPosition(assignedPos)}
+                            onClick={(e) => { e.stopPropagation(); unassignPosition(assignedPos); }}
                           >
                             ✕
                           </button>
@@ -160,11 +165,14 @@ const RosterPanel: React.FC = () => {
               const assignedPos = Object.entries(positionAssignments).find(
                 ([, pid]) => pid === player.id
               )?.[0];
+              const isSelected = selectedRosterPlayerId === player.id;
 
               return (
                 <div
                   key={player.id}
-                  className={`roster-player-chip ${assignedPos ? 'assigned' : ''}`}
+                  className={`roster-player-chip ${assignedPos ? 'assigned' : ''} ${isSelected ? 'active-selection' : ''}`}
+                  onClick={() => selectRosterPlayer(isSelected ? null : player.id)}
+                  style={{ cursor: 'pointer', transition: 'all 0.2s ease' }}
                   title={
                     player.preferredPositions.length > 0
                       ? `Postes : ${player.preferredPositions.map(translatePosition).join(', ')}`
@@ -190,7 +198,7 @@ const RosterPanel: React.FC = () => {
                       <span className="assigned-pos">{translatePosition(assignedPos)}</span>
                       <button
                         className="unassign-btn"
-                        onClick={() => unassignPosition(assignedPos)}
+                        onClick={(e) => { e.stopPropagation(); unassignPosition(assignedPos); }}
                         title="Retirer de ce poste"
                       >
                         ✕

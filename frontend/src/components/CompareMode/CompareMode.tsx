@@ -62,31 +62,33 @@ interface DualRadarProps {
 }
 
 const DualRadar: React.FC<DualRadarProps> = ({ formationA, formationB }) => {
+  const statsA = formationA.radar_stats || { attack: 0, defense: 0, pressing: 0, possession: 0, transition: 0 };
+  const statsB = formationB.radar_stats || { attack: 0, defense: 0, pressing: 0, possession: 0, transition: 0 };
   const data = [
     {
       subject: 'Attaque',
-      A: formationA.radar_stats.attack,
-      B: formationB.radar_stats.attack,
+      A: statsA.attack || 0,
+      B: statsB.attack || 0,
     },
     {
       subject: 'Défense',
-      A: formationA.radar_stats.defense,
-      B: formationB.radar_stats.defense,
+      A: statsA.defense || 0,
+      B: statsB.defense || 0,
     },
     {
       subject: 'Pressing',
-      A: formationA.radar_stats.pressing,
-      B: formationB.radar_stats.pressing,
+      A: statsA.pressing || 0,
+      B: statsB.pressing || 0,
     },
     {
       subject: 'Possession',
-      A: formationA.radar_stats.possession,
-      B: formationB.radar_stats.possession,
+      A: statsA.possession || 0,
+      B: statsB.possession || 0,
     },
     {
       subject: 'Transition',
-      A: formationA.radar_stats.transition,
-      B: formationB.radar_stats.transition,
+      A: statsA.transition || 0,
+      B: statsB.transition || 0,
     },
   ];
 
@@ -211,8 +213,8 @@ const CompareMode: React.FC = () => {
             <h3 className="compare-section-title">Tableau comparatif</h3>
             <div className="compare-stat-rows">
               {allStats.map((stat) => {
-                const valA = currentFormation.radar_stats[stat];
-                const valB = compareFormation.radar_stats[stat];
+                const valA = (currentFormation.radar_stats && currentFormation.radar_stats[stat]) || 0;
+                const valB = (compareFormation.radar_stats && compareFormation.radar_stats[stat]) || 0;
                 const winner = valA > valB ? 'A' : valA < valB ? 'B' : 'tie';
                 return (
                   <div key={stat} className="compare-stat-row">

@@ -211,6 +211,9 @@ const Pitch: React.FC<PitchProps> = ({
     players,
     draggedPositions,
     updatePlayerPosition,
+    selectedRosterPlayerId,
+    assignPlayerToPosition,
+    selectRosterPlayer,
   } = useTacticStore();
 
   const formation = propFormation || currentFormation;
@@ -315,7 +318,14 @@ const Pitch: React.FC<PitchProps> = ({
                 color={homeColor}
                 radius={playerRadius}
                 onDragEnd={handleDragEnd}
-                onClick={(id) => setSelectedPosition({ id, label: pos.label })}
+                onClick={(id) => {
+                  if (selectedRosterPlayerId) {
+                    assignPlayerToPosition(id, selectedRosterPlayerId);
+                    selectRosterPlayer(null);
+                  } else {
+                    setSelectedPosition({ id, label: pos.label });
+                  }
+                }}
                 mini={mini}
               />
             );

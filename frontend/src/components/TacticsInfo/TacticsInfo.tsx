@@ -17,12 +17,13 @@ interface FormationRadarProps {
 }
 
 const FormationRadar: React.FC<FormationRadarProps> = ({ formation, color = '#00d4ff' }) => {
+  const stats = formation.radar_stats || { attack: 0, defense: 0, pressing: 0, possession: 0, transition: 0 };
   const data = [
-    { subject: 'Attaque', value: formation.radar_stats.attack },
-    { subject: 'Défense', value: formation.radar_stats.defense },
-    { subject: 'Pressing', value: formation.radar_stats.pressing },
-    { subject: 'Possession', value: formation.radar_stats.possession },
-    { subject: 'Transition', value: formation.radar_stats.transition },
+    { subject: 'Attaque', value: stats.attack || 0 },
+    { subject: 'Défense', value: stats.defense || 0 },
+    { subject: 'Pressing', value: stats.pressing || 0 },
+    { subject: 'Possession', value: stats.possession || 0 },
+    { subject: 'Transition', value: stats.transition || 0 },
   ];
 
   return (
@@ -130,7 +131,7 @@ const TacticsInfo: React.FC = () => {
 
           {/* Stat bars */}
           <div className="tactics-stats">
-            {Object.entries(currentFormation.radar_stats).map(([key, val]) => (
+            {Object.entries(currentFormation.radar_stats || {}).map(([key, val]) => (
               <div key={key} className="stat-row">
                 <span className="stat-key">{key}</span>
                 <div className="stat-track-full">
