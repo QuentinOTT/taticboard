@@ -2,13 +2,13 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Stage, Layer, Rect, Line, Circle, Arc, Text, Group } from 'react-konva';
 import Konva from 'konva';
 import { useTacticStore } from '../../stores/useTacticStore';
-import { PlayerPosition } from '../../types';
+import { PlayerPosition, translatePosition } from '../../types';
 import PlayerForm from '../PlayerForm/PlayerForm';
 
 // ─── Pitch dimensions (normalized) ───────────────────────────
 const PITCH_ASPECT = {
-  '11': { w: 105, h: 68 }, // 105m × 68m
-  '8':  { w: 70,  h: 50 }, // 70m × 50m
+  '11': { w: 68,  h: 105 }, // 68m wide × 105m long
+  '8':  { w: 50,  h: 70 },  // 50m wide × 70m long
 };
 
 interface PitchProps {
@@ -160,7 +160,7 @@ const PlayerToken: React.FC<PlayerTokenProps> = ({
       <Circle radius={radius} fill={color} stroke="white" strokeWidth={mini ? 1.5 : 2.5} />
       {/* Position label */}
       <Text
-        text={number > 0 ? String(number) : label}
+        text={number > 0 ? String(number) : translatePosition(label)}
         fontSize={fontSize}
         fontFamily="Inter, sans-serif"
         fontStyle="bold"

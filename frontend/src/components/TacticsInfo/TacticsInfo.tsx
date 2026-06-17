@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from 'recharts';
 import { useTacticStore } from '../../stores/useTacticStore';
-import { Formation } from '../../types';
+import { Formation, translatePosition } from '../../types';
 
 // ─── Radar Chart ──────────────────────────────────────────────
 interface FormationRadarProps {
@@ -206,7 +206,7 @@ const TacticsInfo: React.FC = () => {
                   <div className="role-list">
                     {Object.entries(currentFormation.key_player_roles).map(([pos, desc]) => (
                       <div key={pos} className="role-item">
-                        <span className="role-pos">{pos}</span>
+                        <span className="role-pos">{translatePosition(pos)}</span>
                         <span className="role-desc">{desc}</span>
                       </div>
                     ))}

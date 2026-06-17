@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTacticStore } from '../../stores/useTacticStore';
 import { useNavigate } from 'react-router-dom';
+import { translatePosition } from '../../types';
 
 const RosterPanel: React.FC = () => {
   const navigate = useNavigate();
@@ -60,12 +61,12 @@ const RosterPanel: React.FC = () => {
                           {player.name}
                         </span>
                         <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)' }}>
-                          {player.preferredPositions.slice(0, 2).join(' · ')}
+                          {player.preferredPositions.map(translatePosition).slice(0, 2).join(' · ')}
                         </span>
                       </div>
                       {assignedPos && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                          <span className="navbar-formation-badge" style={{ fontSize: 9, padding: '1px 5px' }}>{assignedPos}</span>
+                          <span className="navbar-formation-badge" style={{ fontSize: 9, padding: '1px 5px' }}>{translatePosition(assignedPos)}</span>
                           <button
                             style={{ background: 'transparent', border: 'none', color: '#ef4444', fontSize: 14, cursor: 'pointer', padding: 4 }}
                             onClick={() => unassignPosition(assignedPos)}
@@ -166,7 +167,7 @@ const RosterPanel: React.FC = () => {
                   className={`roster-player-chip ${assignedPos ? 'assigned' : ''}`}
                   title={
                     player.preferredPositions.length > 0
-                      ? `Postes : ${player.preferredPositions.join(', ')}`
+                      ? `Postes : ${player.preferredPositions.map(translatePosition).join(', ')}`
                       : 'Aucun poste préférentiel'
                   }
                 >
@@ -179,14 +180,14 @@ const RosterPanel: React.FC = () => {
                       {player.foot === 'R' ? '🦵D' : player.foot === 'L' ? '🦵G' : '⚡'}
                       {player.preferredPositions.length > 0 && (
                         <span className="roster-player-positions">
-                          {player.preferredPositions.slice(0, 3).join(' · ')}
+                          {player.preferredPositions.map(translatePosition).slice(0, 3).join(' · ')}
                         </span>
                       )}
                     </span>
                   </div>
                   {assignedPos && (
                     <div className="roster-assigned-badge">
-                      <span className="assigned-pos">{assignedPos}</span>
+                      <span className="assigned-pos">{translatePosition(assignedPos)}</span>
                       <button
                         className="unassign-btn"
                         onClick={() => unassignPosition(assignedPos)}

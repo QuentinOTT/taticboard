@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import toast from 'react-hot-toast';
 import { useTacticStore } from '../stores/useTacticStore';
-import { TeamPlayer, FootballType } from '../types';
+import { TeamPlayer, FootballType, translatePosition } from '../types';
 import { useIsMobile } from '../hooks/useIsMobile';
 
 // ─── Couleurs d'avatar disponibles ───────────────────────────
@@ -94,7 +94,7 @@ const PlayerRow: React.FC<PlayerRowProps> = ({ player, positions, onChange, onRe
             className={`pos-chip ${player.preferredPositions.includes(pos) ? 'active' : ''}`}
             onClick={() => togglePos(pos)}
           >
-            {pos}
+            {translatePosition(pos)}
           </button>
         ))}
       </div>
@@ -362,7 +362,7 @@ const TeamManager: React.FC = () => {
                         <span className="player-preview-number">{p.number}</span>
                         <span className="player-preview-name">{p.name.split(' ').pop()?.slice(0, 8)}</span>
                         {p.preferredPositions[0] && (
-                          <span className="player-preview-pos">{p.preferredPositions[0]}</span>
+                          <span className="player-preview-pos">{translatePosition(p.preferredPositions[0])}</span>
                         )}
                       </div>
                     ))}

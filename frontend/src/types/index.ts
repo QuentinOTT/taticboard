@@ -113,3 +113,34 @@ export interface ApiResponse<T> {
 export interface ApiError {
   error: string;
 }
+
+// ─── Position Translations (FR) ───────────────────────────────
+
+export const POSITION_TRANSLATIONS: Record<string, string> = {
+  'GK': 'GB',
+  'CB': 'DC',
+  'LB': 'DG',
+  'RB': 'DD',
+  'LWB': 'DLG',
+  'RWB': 'DLD',
+  'CDM': 'MDC',
+  'CM': 'MC',
+  'CAM': 'MOC',
+  'LM': 'MG',
+  'RM': 'MD',
+  'LW': 'AG',
+  'RW': 'AD',
+  'ST': 'BU',
+  'CF': 'AT',
+  'GK-A': 'GB',
+  'CB-L': 'DCG',
+  'CB-R': 'DCD',
+  'WB-L': 'DLG',
+  'WB-R': 'DLD',
+};
+
+export function translatePosition(label: string): string {
+  const clean = label.toUpperCase().trim();
+  return POSITION_TRANSLATIONS[clean] || label;
+}
+
